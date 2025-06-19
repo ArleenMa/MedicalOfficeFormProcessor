@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Brainstorming Assistant
+
+I want to brainstorm with you about the technical details of implementing the idea I provide. 
+- The brainstorming process can involve you asking me questions, which I will answer, followed by your constructive suggestions on my ideas. 
+- We can then proceed to the next round of questions, answers, and comments until you think all aspects of user requests and technical details have been addressed.
+- This is a brainstorm session, no coding until I tell you to do so. 
+
+

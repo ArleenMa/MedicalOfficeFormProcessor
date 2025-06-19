@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Office Form Processor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Patient Management Header -->
+        <header class="patient-header">
+            <div class="patient-navigation">
+                <h1>Medical Office Form Processor</h1>
+                <div class="patient-controls">
+                    <div class="patient-counter">
+                        <span id="patientCounter">No patients loaded</span>
+                    </div>
+                    <div class="navigation-buttons">
+                        <button id="prevPatient" class="nav-btn">← Previous</button>
+                        <select id="patientSelect" class="patient-select">
+                            <option value="">Select Patient...</option>
+                        </select>
+                        <button id="nextPatient" class="nav-btn">Next →</button>
+                    </div>
+                    <div class="management-buttons">
+                        <button id="newPatient" class="action-btn new">New Patient</button>
+                        <button id="deletePatient" class="action-btn delete">Delete Current</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Patient Information Section -->
+            <section class="patient-info-section">
+                <h2>Patient Information</h2>
+                <form id="patientForm" class="patient-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lastName">Last Name*</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">First Name*</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sex">Sex</label>
+                            <select id="sex" name="sex">
+                                <option value="">Select...</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patientId">Patient ID</label>
+                            <input type="text" id="patientId" name="patientId">
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentDateTime">Current Appointment Date & Time</label>
+                            <input type="datetime-local" id="appointmentDateTime" name="appointmentDateTime">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="visitReason">Reason for Current Visit</label>
+                            <textarea id="visitReason" name="visitReason" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lastVisitDate">Date of Last Visit</label>
+                            <input type="date" id="lastVisitDate" name="lastVisitDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="overdueCharges">Any Overdue Charges</label>
+                            <input type="text" id="overdueCharges" name="overdueCharges">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="savePatient" class="action-btn save">Save Patient Info</button>
+                        <button type="button" id="generateForm" class="action-btn primary">Generate Printable Form</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Medical Services Section -->
+            <section class="services-section">
+                <h2>Medical Services</h2>
+                <div class="services-list">
+                    <div class="service-item">
+                        <input type="checkbox" id="service1" name="services" value="UV coating on glasses">
+                        <label for="service1">UV coating on glasses</label>
+                    </div>
+                    <div class="service-item">
+                        <input type="checkbox" id="service2" name="services" value="Eye exam">
+                        <label for="service2">Eye exam</label>
+                    </div>
+                    <div class="service-item">
+                        <input type="checkbox" id="service3" name="services" value="Contact lens fitting">
+                        <label for="service3">Contact lens fitting</label>
+                    </div>
+                    <div class="service-item">
+                        <input type="checkbox" id="service4" name="services" value="Retinal screening">
+                        <label for="service4">Retinal screening</label>
+                    </div>
+                    <div class="service-item">
+                        <input type="checkbox" id="service5" name="services" value="Glaucoma testing">
+                        <label for="service5">Glaucoma testing</label>
+                    </div>
+                    <div class="service-item">
+                        <input type="checkbox" id="service6" name="services" value="Frame selection/adjustment">
+                        <label for="service6">Frame selection/adjustment</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Processing Section -->
+            <section class="ai-section">
+                <h2>AI Form Processing</h2>
+                
+                <div class="api-key-section">
+                    <div class="form-group">
+                        <label for="apiKey">Google Gemini API Key</label>
+                        <input type="password" id="apiKey" name="apiKey" placeholder="Enter your Gemini API key">
+                        <button type="button" id="saveApiKey" class="action-btn">Save API Key</button>
+                    </div>
+                </div>
+
+                <div class="upload-section">
+                    <div class="form-group">
+                        <label for="formImage">Upload Scanned Form</label>
+                        <input type="file" id="formImage" name="formImage" accept="image/*">
+                        <div id="imagePreview" class="image-preview"></div>
+                    </div>
+                    <button type="button" id="processImage" class="action-btn primary" disabled>Process with AI</button>
+                </div>
+
+                <div id="aiResults" class="ai-results" style="display: none;">
+                    <h3>AI Extraction Results</h3>
+                    <div class="results-content">
+                        <div class="form-group">
+                            <label for="extractedServices">Extracted Services</label>
+                            <textarea id="extractedServices" name="extractedServices" rows="4" readonly></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="extractedNotes">Extracted Notes</label>
+                            <textarea id="extractedNotes" name="extractedNotes" rows="6"></textarea>
+                        </div>
+                        <div class="results-actions">
+                            <button type="button" id="confirmResults" class="action-btn success">Confirm & Save</button>
+                            <button type="button" id="reprocessImage" class="action-btn">Reprocess</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Export Section -->
+            <section class="export-section">
+                <h2>Export Data</h2>
+                <div class="export-actions">
+                    <button type="button" id="exportPatient" class="action-btn primary">Export Current Patient</button>
+                    <button type="button" id="exportAll" class="action-btn">Export All Patients</button>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="settings-section">
+                <h2>Settings</h2>
+                <div class="settings-actions">
+                    <button type="button" id="clearPatientData" class="action-btn warning">Clear All Patient Data</button>
+                    <button type="button" id="clearApiKey" class="action-btn warning">Clear API Key</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Print Template (Hidden) -->
+    <div id="printTemplate" class="print-template" style="display: none;">
+        <div class="print-header">
+            <h1>Patient Information Form</h1>
+            <div class="print-date"></div>
+        </div>
+        <div class="print-content">
+            <div class="patient-details"></div>
+            <div class="services-checklist">
+                <h2>Medical Services</h2>
+                <div class="service-options"></div>
+            </div>
+            <div class="notes-section">
+                <h2>Additional Notes</h2>
+                <div class="notes-lines"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
