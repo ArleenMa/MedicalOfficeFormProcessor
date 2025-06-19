@@ -95,6 +95,54 @@ class MedicalFormProcessor {
         this.showStatus('New patient created', 'success');
     }
 
+    createNewPatientFromForm() {
+        const form = document.getElementById('patientForm');
+        const newPatient = {
+            id: Date.now().toString(),
+            lastName: '',
+            firstName: '',
+            sex: '',
+            dateOfBirth: '',
+            patientId: '',
+            appointmentDateTime: '',
+            visitReason: '',
+            lastVisitDate: '',
+            overdueCharges: '',
+            services: [],
+            extractedNotes: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
+
+        // Save basic information from current form
+        const formData = new FormData(form);
+        for (let [key, value] of formData.entries()) {
+            if (key !== 'services' && newPatient.hasOwnProperty(key)) {
+                newPatient[key] = value;
+            }
+        }
+
+        // Save services from current form
+        this.services.forEach((service, i) => {
+            const checkbox = document.getElementById(`service${i + 1}`);
+            if (checkbox && checkbox.checked) {
+                newPatient.services.push(service);
+            }
+        });
+
+        // Save AI extracted notes from current form
+        const extractedNotes = document.getElementById('extractedNotes');
+        if (extractedNotes && extractedNotes.value) {
+            newPatient.extractedNotes = extractedNotes.value;
+        }
+
+        this.patients.push(newPatient);
+        this.currentPatientIndex = this.patients.length - 1;
+        this.updateUI();
+        this.saveToStorage();
+        this.showStatus('Patient information saved', 'success');
+    }
+
     deleteCurrentPatient() {
         if (this.currentPatientIndex >= 0 && this.patients.length > 0) {
             const patient = this.patients[this.currentPatientIndex];
@@ -174,8 +222,9 @@ class MedicalFormProcessor {
     }
 
     saveCurrentPatient() {
+        // If no patient exists, create one first
         if (this.currentPatientIndex < 0) {
-            this.createNewPatient();
+            this.createNewPatientFromForm();
             return;
         }
 
